@@ -11,16 +11,14 @@ class GenerateOBOUpdateScript {
      * Generates an OWLOntology in the form of an OBO update script
      */
     fun generate(original: File, update: File, ontologyIri: String, outputFile: File) {
-        with(OWLManager.createOWLOntologyManager()) {
-            val originalO = loadOntologyFromOntologyDocument(original)
-            val updateO = loadOntologyFromOntologyDocument(update)
-            val merged = generate(originalO, updateO, IRI.create(ontologyIri))
-            merged.saveOntology(outputFile.outputStream())
-        }
+        val originalO = OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(original)
+        val updateO = OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(update)
+        val merged = generate(originalO, updateO, IRI.create(ontologyIri))
+        merged.saveOntology(outputFile.outputStream())
     }
 
     /**
-        }
+    }
      * Generates an OWLOntology in the form of an OBO update script
      */
     fun generate(original: OWLOntology, update: OWLOntology, ontologyIri: IRI): OWLOntology {
