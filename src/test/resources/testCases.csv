@@ -1,0 +1,4 @@
+directory,fileExtension
+singleComplexAxiom,ttl
+singleComplexAxiomWithComplexCommon,ttl
+originalAndUpdatedWithComplexCommon,ttl

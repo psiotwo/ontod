@@ -4,9 +4,23 @@ import org.semanticweb.owlapi.apibinding.OWLManager
 import org.semanticweb.owlapi.model.*
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary
 import uk.ac.manchester.cs.owl.owlapi.OWLAnnotationPropertyImpl
+import java.io.File
 
 class GenerateOBOUpdateScript {
     /**
+     * Generates an OWLOntology in the form of an OBO update script
+     */
+    fun generate(original: File, update: File, ontologyIri: IRI, outputFile: File) {
+        with(OWLManager.createOWLOntologyManager()) {
+            val originalO = loadOntologyFromOntologyDocument(original)
+            val updateO = loadOntologyFromOntologyDocument(update)
+            val merged = generate(originalO, updateO, ontologyIri)
+            merged.saveOntology(outputFile.outputStream())
+        }
+    }
+
+    /**
+        }
      * Generates an OWLOntology in the form of an OBO update script
      */
     fun generate(original: OWLOntology, update: OWLOntology, ontologyIri: IRI): OWLOntology {
