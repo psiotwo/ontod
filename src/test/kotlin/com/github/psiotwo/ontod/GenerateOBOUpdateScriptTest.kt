@@ -15,7 +15,7 @@ class GenerateOBOUpdateScriptTest {
     private val sut = GenerateOBOUpdateScript()
 
     private val m = OWLManager.createOWLOntologyManager()
-    private val iri = IRI.create("http://xxx.yyy")
+    private val iri = IRI.create(prefix)
 
     @Test
     fun testGeneratesEmptyOntologyWhenBothOntologiesAreEmpty() {
