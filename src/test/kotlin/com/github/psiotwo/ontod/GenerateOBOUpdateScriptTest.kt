@@ -8,7 +8,6 @@ import org.semanticweb.owlapi.apibinding.OWLManager
 import org.semanticweb.owlapi.model.IRI
 import org.semanticweb.owlapi.model.OWLOntology
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary
-import kotlin.jvm.optionals.getOrNull
 
 class GenerateOBOUpdateScriptTest {
 
@@ -25,7 +24,7 @@ class GenerateOBOUpdateScriptTest {
         val diff = sut.generate(original, update, iri)
 
         Assertions.assertEquals(0, diff.axiomCount)
-        Assertions.assertEquals(iri, diff.ontologyID?.ontologyIRI?.getOrNull())
+        Assertions.assertEquals(iri, diff.ontologyID.ontologyIRI?.get())
     }
 
     @Test
@@ -60,16 +59,16 @@ class GenerateOBOUpdateScriptTest {
 
     @ParameterizedTest
     @CsvFileSource(resources = ["/testCases.csv"], numLinesToSkip = 1)
-    fun testMultiple(directory: String, fileExtension : String) {
-        val original: OWLOntology =
-            OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(javaClass.getResourceAsStream("/$directory/original.$fileExtension")!!)
-        val updated: OWLOntology =
-            OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(javaClass.getResourceAsStream("/$directory/updated.$fileExtension")!!)
-        val updateScriptExpected: OWLOntology =
-            OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(javaClass.getResourceAsStream("/$directory/update-script-expected.$fileExtension")!!)
+    fun testMultiple(directory: String, fileExtension: String) {
+        val original: OWLOntology = owlOntology("/$directory/original.$fileExtension")
+        val updated: OWLOntology = owlOntology("/$directory/updated.$fileExtension")
+        val updateScriptExpected: OWLOntology = owlOntology("/$directory/update-script-expected.$fileExtension")
 
         val updateScriptActual = sut.generate(original, updated, updateScriptExpected.ontologyID.ontologyIRI.get())
 
         Assertions.assertEquals(updateScriptExpected.axioms, updateScriptActual.axioms)
     }
+
+    private fun owlOntology(file: String): OWLOntology =
+        OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(javaClass.getResourceAsStream(file)!!)
 }

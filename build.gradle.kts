@@ -13,10 +13,14 @@ repositories {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    maxHeapSize = "10g"
 }
 
 dependencies {
-    implementation("net.sourceforge.owlapi:owlapi-distribution:5.5.0")
+    // https://mvnrepository.com/artifact/net.sourceforge.owlapi/owlapi-distribution
+    implementation("net.sourceforge.owlapi:owlapi-distribution:4.5.9")
+
+    implementation("edu.stanford.protege:owl-diff-engine:3.0.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
